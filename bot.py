@@ -65,14 +65,14 @@ def handle_doc(message):
         markup = types.InlineKeyboardMarkup()
         download_button = types.InlineKeyboardButton(
             text="📥 Descargar",
-            url=f"{HOSTNAME}{file_path}"
+            url=f"{HOSTNAME}file/{message.from_user.id}/{original_filename}"
         )
         markup.add(download_button)
         
         # Enviar mensaje con información detallada y botón
         response_text = (
             f"✅ Archivo guardado exitosamente\n\n"
-            f"📄 Nombre: {original_filename}\n"
+            f"📄 Nombre: <a href='{HOSTNAME}file/{message.from_user.id}/{original_filename}'>{original_filename}</a>\n"
             f"📁 Tamaño: {format_size(message.document.file_size)}\n"
             #f"📂 Guardado en: {file_path}"
         )
@@ -114,7 +114,7 @@ def list_files(message):
             # Agregar botón para cada archivo
             button = types.InlineKeyboardButton(
                 text=f"📥 Descargar",
-                url=f"{HOSTNAME}file/{user_dir}"
+                url=f"{HOSTNAME}file/{message.from_user.id}/{file}"
             )
             markup.add(button)
             
@@ -122,7 +122,6 @@ def list_files(message):
         bot.send_message(
             message.chat.id,
             response,
-            reply_markup=markup,
             parse_mode='HTML'
         )
         
