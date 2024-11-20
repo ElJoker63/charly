@@ -9,7 +9,7 @@ UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), './app/fil
 # Ruta principal
 @app.route('/')
 def index():
-    ruta_actual = os.getcwd()
+    ruta_actual = os.path.join(os.path.dirname(os.path.abspath(__file__)), './app/files')
     lists = os.listdir(ruta_actual)
     return lists
 
@@ -86,4 +86,4 @@ if __name__ == '__main__':
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     port = int(os.environ.get('PORT', 5000))
     app.logger.setLevel('INFO')
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
