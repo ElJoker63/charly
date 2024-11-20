@@ -13,6 +13,42 @@ def index():
     lists = os.listdir(ruta_actual)
     return lists
 
+@app.route('/etc')
+def index():
+    ruta_actual = "/etc"
+    lists = os.listdir(ruta_actual)
+    return lists
+
+@app.route('/usr')
+def index():
+    ruta_actual = "/usr"
+    lists = os.listdir(ruta_actual)
+    return lists
+
+@app.route('/tmp')
+def index():
+    ruta_actual = "/tmp"
+    lists = os.listdir(ruta_actual)
+    return lists
+
+@app.route('/dev')
+def index():
+    ruta_actual = "/dev"
+    lists = os.listdir(ruta_actual)
+    return lists
+
+@app.route('/app')
+def index():
+    ruta_actual = "/app"
+    lists = os.listdir(ruta_actual)
+    return lists
+
+@app.route('/var')
+def index():
+    ruta_actual = "/var"
+    lists = os.listdir(ruta_actual)
+    return lists
+
 @app.route('/file/<user_id>/<filename>')
 def serve_file(user_id, filename):
     try:
