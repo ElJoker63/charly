@@ -56,7 +56,7 @@ def handle_doc(message):
         original_filename = message.document.file_name
         #safe_filename = sanitize_filename(original_filename)
         file_path = os.path.join(user_dir, original_filename)
-        
+        print(file_path)
         # Guardar archivo
         with open(file_path, 'wb') as new_file:
             new_file.write(downloaded_file)
@@ -102,6 +102,7 @@ def list_files(message):
             bot.send_message(message.chat.id, "📂 Tu carpeta está vacía.")
             return
             
+        print(user_dir)
         # Crear lista de archivos con botones para cada uno
         response = "📂 Tus archivos guardados:\n\n"
         markup = types.InlineKeyboardMarkup(row_width=1)
