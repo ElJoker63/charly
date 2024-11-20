@@ -34,7 +34,7 @@ class Server:
     PING_INTERVAL = int(env.get("PING_INTERVAL", "1200"))
     HAS_SSL = str(env.get("HAS_SSL", "True").lower()) in ("1", "true", "t", "yes", "y")
     NO_PORT = str(env.get("NO_PORT", "True").lower()) in ("1", "true", "t", "yes", "y")
-    FQDN = str(env.get("FQDN", "filetolinkbyarctix.arctixapis.workers.dev"))
+    FQDN = str(env.get("FQDN", "sheltered-ocean-62187-35b69a2063b1.herokuapp.com"))
     URL = "http{}://{}{}/".format(
         "s" if HAS_SSL else "", FQDN, "" if NO_PORT else ":" + str(PORT)
     )
