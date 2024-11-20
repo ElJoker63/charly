@@ -95,5 +95,17 @@ def list_files(message):
     except Exception as e:
         bot.reply_to(message, f"❌ Error al listar archivos: {str(e)}")
 
-print("Bot iniciado!")
-bot.infinity_polling()
+def main():
+    try:
+        # Eliminar webhook antes de iniciar el polling
+        bot.remove_webhook()
+        print("Webhook eliminado")
+        
+        print("Bot iniciado!")
+        # Usar infinity_polling para reconexión automática
+        bot.infinity_polling(timeout=60, long_polling_timeout=60)
+    except Exception as e:
+        print(f"Error al iniciar el bot: {e}")
+
+if __name__ == "__main__":
+    main()
