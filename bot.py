@@ -4,7 +4,7 @@ import uuid
 from telebot import types
 
 TOKEN = '6816962345:AAExMSjcfzv0gHWDEqLMhlfpzLSpfQKZmsU'
-HOSTNAME = os.environ.get('HOSTNAME', '')
+HOSTNAME = os.environ.get('HOSTNAME', 'steam-b-f64775ae80e1.herokuapp.com')
 bot = telebot.TeleBot(token=TOKEN)
 
 # Directorio base para almacenar archivos
