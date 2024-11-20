@@ -1,7 +1,7 @@
 import os
 from flask import Flask, send_file, abort, request
 
-app = Flask(__name__, root_path=os.getcwd())
+app = Flask(__name__, root_path="/app")
 
 # Configuración
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
