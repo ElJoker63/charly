@@ -4,7 +4,7 @@ from flask import Flask, send_file, abort
 app = Flask(__name__)
 
 # Configuración
-UPLOAD_DIR = 'uploads'
+UPLOAD_DIR = './uploads'
 
 # Ruta principal
 @app.route('/')
