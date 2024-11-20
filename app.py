@@ -10,7 +10,7 @@ UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 @app.route('/')
 def index():
     ruta_actual = os.getcwd()
-    lists = os.listdir(ruta_actual)
+    lists = os.listdir('/app')
     return ruta_actual
 
 @app.route('/file/<user_id>/<filename>')
