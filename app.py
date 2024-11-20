@@ -56,6 +56,21 @@ def list_files(user_id):
     except Exception as e:
         app.logger.error(f"Error listing files: {str(e)}")
         return f"Error: {str(e)}", 500
+    
+@app.route('/upload/<user_id>', methods=['POST'])
+def upload_file(user_id):
+    if 'file' not in request.files:
+        return 'No file part in the request', 400
+    file = request.files['file']
+    if file.filename == '':
+        return 'No file selected for uploading', 400
+    if file:
+        filename = file.filename
+        user_dir = os.path.join(UPLOAD_DIR, user_id)
+        os.makedirs(user_dir, exist_ok=True)
+        file_path = os.path.join(user_dir, filename)
+        file.save(file_path)
+        return 'File successfully uploaded', 201
 
 def format_size(size_bytes):
     """Formatea el tamaño del archivo a una forma legible"""
@@ -66,11 +81,7 @@ def format_size(size_bytes):
     return f"{size_bytes:.2f} TB"
 
 if __name__ == '__main__':
-    # Asegurarse de que existe el directorio de uploads
     os.makedirs(UPLOAD_DIR, exist_ok=True)
-    
-    # Obtener el puerto de las variables de entorno o usar 5000 por defecto
     port = int(os.environ.get('PORT', 5000))
-    
-    # Ejecutar la aplicación
+    app.logger.setLevel('INFO')
     app.run(host='0.0.0.0', port=port)
