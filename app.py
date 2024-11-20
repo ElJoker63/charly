@@ -4,7 +4,7 @@ from flask import Flask, send_file, abort
 app = Flask(__name__)
 
 # Configuración
-UPLOAD_DIR = './uploads'
+UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 
 # Ruta principal
 @app.route('/')
@@ -15,27 +15,32 @@ def index():
 def serve_file(user_id, filename):
     try:
         file_path = os.path.join(UPLOAD_DIR, user_id, filename)
-        print(f"Checking file existence: {file_path}")
+        app.logger.info(f"Attempting to serve file: {file_path}")
+        
         if os.path.exists(file_path):
-            print(file_path)
-            return send_file(path_or_file=file_path, download_name=filename)
+            app.logger.info(f"File found: {file_path}")
+            return send_file(path_or_file=file_path, download_name=filename, as_attachment=True)
         else:
+            app.logger.error(f"File not found: {file_path}")
             abort(404, description="Archivo no encontrado")
     except Exception as e:
+        app.logger.error(f"Error serving file: {str(e)}")
         return f"Error al servir el archivo: {str(e)}", 500
-    
 
 @app.route('/files/<user_id>')
 def list_files(user_id):
     try:
         user_dir = os.path.join(UPLOAD_DIR, user_id)
+        app.logger.info(f"Listing files in directory: {user_dir}")
 
         if not os.path.exists(user_dir):
+            app.logger.warning(f"User directory not found: {user_dir}")
             return "User directory not found", 404
 
         files = os.listdir(user_dir)
 
         if not files:
+            app.logger.info(f"No files found for user: {user_id}")
             return "No files found for this user", 404
 
         file_list = "<h1>Archivos disponibles</h1><ul>"
@@ -49,6 +54,7 @@ def list_files(user_id):
         return file_list
 
     except Exception as e:
+        app.logger.error(f"Error listing files: {str(e)}")
         return f"Error: {str(e)}", 500
 
 def format_size(size_bytes):
