@@ -44,13 +44,23 @@ def serve_file(user_id, filename):
 @app.route('/files/<user_id>')
 def list_files(user_id):
     try:
-        # Aquí deberías implementar la lógica para listar los archivos del usuario
-        # desde la URL remota. Esto podría requerir una API específica o algún
-        # método para obtener la lista de archivos.
+        user_dir = os.path.join(UPLOAD_DIR, user_id)
+        if not os.path.exists(user_dir):
+            return "No se encontraron archivos para este usuario", 404
+            
+        files = os.listdir(user_dir)
+        if not files:
+            return "El directorio está vacío", 404
+            
+        file_list = "<h1>Archivos disponibles</h1><ul>"
+        for file in files:
+            file_path = os.path.join(user_dir, file)
+            size = os.path.getsize(file_path)
+            file_url = f"/file/{user_id}/{file}"
+            file_list += f'<li><a href="{file_url}">{file}</a> ({format_size(size)})</li>'
+        file_list += "</ul>"
         
-        # Por ahora, devolveremos un mensaje indicando que esta funcionalidad
-        # no está implementada para URLs remotas
-        return "La función de listar archivos no está disponible para URLs remotas", 501
+        return file_list
         
     except Exception as e:
         return f"Error: {str(e)}", 500
