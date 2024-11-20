@@ -9,7 +9,9 @@ UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app/uploa
 # Ruta principal
 @app.route('/')
 def index():
-    return 'Servidor de archivos activo'
+    ruta_actual = os.getcwd()
+    lists = os.listdir(ruta_actual)
+    return lists
 
 @app.route('/file/<user_id>/<filename>')
 def serve_file(user_id, filename):
