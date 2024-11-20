@@ -13,7 +13,7 @@ def index():
     lists = os.listdir(ruta_actual)
     return lists
 
-@app.route('/file/<user_id>/<filename>')
+@app.route('file/<user_id>/<filename>')
 def serve_file(user_id, filename):
     try:
         file_path = os.path.join(UPLOAD_DIR, user_id, filename)
@@ -29,7 +29,7 @@ def serve_file(user_id, filename):
         app.logger.error(f"Error serving file: {str(e)}")
         return f"Error al servir el archivo: {str(e)}", 500
 
-@app.route('/files/<user_id>')
+@app.route('files/<user_id>')
 def list_files(user_id):
     try:
         user_dir = os.path.join(UPLOAD_DIR, user_id)
