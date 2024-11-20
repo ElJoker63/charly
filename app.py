@@ -4,13 +4,13 @@ from flask import Flask, send_file, abort, request
 app = Flask(__name__)
 
 # Configuración
-UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app/uploads')
+UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '/app/uploads')
 
 # Ruta principal
 @app.route('/')
 def index():
     ruta_actual = os.getcwd()
-    lists = os.listdir(ruta_actual)
+    lists = os.listdir(UPLOAD_DIR)
     return lists
 
 @app.route('/file/<user_id>/<filename>')
