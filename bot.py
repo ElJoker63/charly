@@ -134,6 +134,7 @@ def main():
         bot.remove_webhook()
         print("Webhook eliminado")
         
+        print(os.getcwd())
         print("Bot iniciado!")
         # Usar infinity_polling para reconexión automática
         bot.infinity_polling(timeout=60, long_polling_timeout=60)
