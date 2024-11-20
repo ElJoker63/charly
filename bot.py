@@ -7,6 +7,7 @@ from datetime import datetime
 # Configuración del bot
 TOKEN = '6816962345:AAExMSjcfzv0gHWDEqLMhlfpzLSpfQKZmsU'
 UPLOAD_DIR = 'uploads'
+HOSTNAME = "https://charly-579759777497.herokuapp.com/"
 
 # Inicializar bot
 bot = telebot.TeleBot(TOKEN)
@@ -37,7 +38,8 @@ def format_size(size_bytes):
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "¡Hola! Envíame cualquier archivo y lo guardaré para ti.")
+    # Enviar nuevo mensaje en lugar de responder
+    bot.send_message(message.chat.id, "¡Hola! Envíame cualquier archivo y lo guardaré para ti.")
 
 @bot.message_handler(content_types=['document'])
 def handle_doc(message):
@@ -52,24 +54,39 @@ def handle_doc(message):
         
         # Obtener y sanitizar el nombre original del archivo
         original_filename = message.document.file_name
-        safe_filename = sanitize_filename(original_filename)
-        file_path = os.path.join(user_dir, safe_filename)
+        #safe_filename = sanitize_filename(original_filename)
+        file_path = os.path.join(user_dir, original_filename)
         
         # Guardar archivo
         with open(file_path, 'wb') as new_file:
             new_file.write(downloaded_file)
         
-        # Enviar respuesta con información detallada
+        # Crear botón inline
+        markup = types.InlineKeyboardMarkup()
+        download_button = types.InlineKeyboardButton(
+            text="📥 Descargar",
+            url=f"{HOSTNAME}{file_path}"
+        )
+        markup.add(download_button)
+        
+        # Enviar mensaje con información detallada y botón
         response_text = (
-            f"✅ Archivo guardado exitosamente\n"
+            f"✅ Archivo guardado exitosamente\n\n"
             f"📄 Nombre: {original_filename}\n"
             f"📁 Tamaño: {format_size(message.document.file_size)}\n"
-            f"📂 Guardado en: {file_path}"
+            #f"📂 Guardado en: {file_path}"
         )
-        bot.reply_to(message, response_text)
+        
+        # Enviar nuevo mensaje con botón en lugar de responder
+        bot.send_message(
+            message.chat.id,
+            response_text,
+            reply_markup=markup,
+            parse_mode='HTML'
+        )
         
     except Exception as e:
-        bot.reply_to(message, f"❌ Error al procesar el archivo: {str(e)}")
+        bot.send_message(message.chat.id, f"❌ Error al procesar el archivo: {str(e)}")
 
 @bot.message_handler(commands=['files'])
 def list_files(message):
@@ -77,23 +94,40 @@ def list_files(message):
     try:
         user_dir = os.path.join(UPLOAD_DIR, str(message.from_user.id))
         if not os.path.exists(user_dir):
-            bot.reply_to(message, "📂 Aún no has guardado ningún archivo.")
+            bot.send_message(message.chat.id, "📂 Aún no has guardado ningún archivo.")
             return
             
         files = os.listdir(user_dir)
         if not files:
-            bot.reply_to(message, "📂 Tu carpeta está vacía.")
+            bot.send_message(message.chat.id, "📂 Tu carpeta está vacía.")
             return
             
+        # Crear lista de archivos con botones para cada uno
         response = "📂 Tus archivos guardados:\n\n"
-        for i, file in enumerate(files, 1):
+        markup = types.InlineKeyboardMarkup(row_width=1)
+        
+        for file in files:
             file_path = os.path.join(user_dir, file)
             size = os.path.getsize(file_path)
-            response += f"{i}. 📄 {file} ({format_size(size)})\n"
+            response += f"📄 {file} ({format_size(size)})\n"
             
-        bot.reply_to(message, response)
+            # Agregar botón para cada archivo
+            button = types.InlineKeyboardButton(
+                text=f"📥 Descargar",
+                url=f"{HOSTNAME}{file_path}"
+            )
+            markup.add(button)
+            
+        # Enviar mensaje con botones
+        bot.send_message(
+            message.chat.id,
+            response,
+            reply_markup=markup,
+            parse_mode='HTML'
+        )
+        
     except Exception as e:
-        bot.reply_to(message, f"❌ Error al listar archivos: {str(e)}")
+        bot.send_message(message.chat.id, f"❌ Error al listar archivos: {str(e)}")
 
 def main():
     try:
