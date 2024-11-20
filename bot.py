@@ -114,7 +114,7 @@ def list_files(message):
             # Agregar botón para cada archivo
             button = types.InlineKeyboardButton(
                 text=f"📥 Descargar",
-                url=f"{HOSTNAME}{file_path}"
+                url=f"{HOSTNAME}file/{user_dir}"
             )
             markup.add(button)
             
