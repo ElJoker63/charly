@@ -1,19 +1,19 @@
 import os
 from flask import Flask, send_file, abort, request
 
-app = Flask(__name__)
+app = Flask(__name__, root_path=os.getcwd())
 
 # Configuración
-UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '/app/files')
+UPLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 
 # Ruta principal
 @app.route('/')
 def index():
-    ruta_actual = os.path.join(os.path.dirname(os.path.abspath(__file__)), '/app/files')
+    ruta_actual = os.getcwd()
     lists = os.listdir(ruta_actual)
-    return lists
+    return ruta_actual
 
-@app.route('/files/<user_id>/<filename>')
+@app.route('/file/<user_id>/<filename>')
 def serve_file(user_id, filename):
     try:
         file_path = os.path.join(UPLOAD_DIR, user_id, filename)
@@ -86,4 +86,4 @@ if __name__ == '__main__':
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     port = int(os.environ.get('PORT', 5000))
     app.logger.setLevel('INFO')
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port)
