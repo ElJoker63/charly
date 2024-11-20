@@ -14,37 +14,37 @@ def index():
     return lists
 
 @app.route('/etc')
-def index():
+def etc():
     ruta_actual = "/etc"
     lists = os.listdir(ruta_actual)
     return lists
 
 @app.route('/usr')
-def index():
+def usr():
     ruta_actual = "/usr"
     lists = os.listdir(ruta_actual)
     return lists
 
 @app.route('/tmp')
-def index():
+def tmp():
     ruta_actual = "/tmp"
     lists = os.listdir(ruta_actual)
     return lists
 
 @app.route('/dev')
-def index():
+def dev():
     ruta_actual = "/dev"
     lists = os.listdir(ruta_actual)
     return lists
 
 @app.route('/app')
-def index():
+def ap():
     ruta_actual = "/app"
     lists = os.listdir(ruta_actual)
     return lists
 
 @app.route('/var')
-def index():
+def var():
     ruta_actual = "/var"
     lists = os.listdir(ruta_actual)
     return lists
