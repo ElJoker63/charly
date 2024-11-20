@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Configuración del bot
 TOKEN = '6816962345:AAExMSjcfzv0gHWDEqLMhlfpzLSpfQKZmsU'
-UPLOAD_DIR = 'files'
+UPLOAD_DIR = 'uploads'
 HOSTNAME = "https://charly-579759777497.herokuapp.com/"
 
 # Inicializar bot
