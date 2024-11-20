@@ -109,7 +109,7 @@ def list_files(message):
         for file in files:
             file_path = os.path.join(user_dir, file)
             size = os.path.getsize(file_path)
-            response += f"📄 {file} ({format_size(size)})\n"
+            response += f"📄 <a href='{HOSTNAME}file/{message.from_user.id}/{file}'>{file}</a> ({format_size(size)})\n"
             
             # Agregar botón para cada archivo
             button = types.InlineKeyboardButton(
